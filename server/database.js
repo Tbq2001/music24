@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config(); // Load environment variables
 
-// Database configuration
 const dbConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -15,17 +14,11 @@ const dbConfig = {
     idleTimeoutMillis: 30000
   },
   options: {
-    encrypt: true, // Use based on your setup
-    trustServerCertificate: true, // Useful for local development or self-signed certificates
+    encrypt: true, // For Azure SQL; change based on your needs
+    trustServerCertificate: true, // For local development
   },
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : undefined, // Optional port
+  //port: parseInt(process.env.DB_PORT, 10),
 };
-
-// Check for missing environment variables
-if (!dbConfig.user || !dbConfig.password || !dbConfig.server || !dbConfig.database) {
-  console.error("Missing required database environment variables");
-  process.exit(1); // Exit the application if configuration is incomplete
-}
 
 // Global connection pool
 let poolPromise = null;
@@ -38,10 +31,12 @@ export function getConnectionPool() {
         return pool;
       })
       .catch(err => {
-        console.error('Database connection failed:', err.message);
-        poolPromise = null; // Reset if connection fails
+        console.error('Database connection failed', err);
+        poolPromise = null; // Reset the pool if connection fails
         throw err;
       });
   }
   return poolPromise;
 }
+
+
