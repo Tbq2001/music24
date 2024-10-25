@@ -1,5 +1,5 @@
 import Home from './components/Home';
-import Homepage from './components/Homepage/homepage';
+import Homepage from './components/Homepage/Homepage';
 import Login from './components/login/Login'; 
 import Register from "./components/register/Register";
 import Confirm from './components/confirm/Confirm';// Updated import path
